@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "philiprehberger-func-timeout"
-version = "0.1.0"
+version = "0.1.1"
 description = "Add a timeout to any function call — sync or async"
 readme = "README.md"
 license = "MIT"
