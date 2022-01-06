@@ -24,9 +24,10 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/philiprehberger/py-func-timeout"
+Homepage = "https://github.com/philiprehberger/py-func-timeout#readme"
 Repository = "https://github.com/philiprehberger/py-func-timeout"
 Issues = "https://github.com/philiprehberger/py-func-timeout/issues"
+Changelog = "https://github.com/philiprehberger/py-func-timeout/blob/main/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/philiprehberger_func_timeout"]
