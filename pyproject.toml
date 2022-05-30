@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "philiprehberger-func-timeout"
-version = "0.1.5"
+version = "0.1.6"
 description = "Add a timeout to any function call — sync or async"
 readme = "README.md"
 license = "MIT"
@@ -31,3 +31,9 @@ Changelog = "https://github.com/philiprehberger/py-func-timeout/blob/main/CHANGE
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/philiprehberger_func_timeout"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+strict = true
