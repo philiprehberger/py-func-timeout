@@ -72,6 +72,14 @@ def slow() -> None:
 | `timeout(seconds, *, fallback, exception)` | Decorator that adds a timeout to sync or async functions |
 | `TimeoutError` | Raised on timeout; has a `.seconds` attribute |
 
+
+## Development
+
+```bash
+pip install -e .
+python -m pytest tests/ -v
+```
+
 ## License
 
 MIT
