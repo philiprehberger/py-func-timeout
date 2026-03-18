@@ -6,7 +6,7 @@
 
 Add a timeout to any function call — sync or async.
 
-## Install
+## Installation
 
 ```bash
 pip install philiprehberger-func-timeout
