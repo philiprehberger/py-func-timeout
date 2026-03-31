@@ -2,8 +2,7 @@
 
 [![Tests](https://github.com/philiprehberger/py-func-timeout/actions/workflows/publish.yml/badge.svg)](https://github.com/philiprehberger/py-func-timeout/actions/workflows/publish.yml)
 [![PyPI version](https://img.shields.io/pypi/v/philiprehberger-func-timeout.svg)](https://pypi.org/project/philiprehberger-func-timeout/)
-[![License](https://img.shields.io/github/license/philiprehberger/py-func-timeout)](LICENSE)
-[![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
+[![Last updated](https://img.shields.io/github/last-commit/philiprehberger/py-func-timeout)](https://github.com/philiprehberger/py-func-timeout/commits/main)
 
 Add a timeout to any function call — sync or async.
 
@@ -73,7 +72,6 @@ def slow() -> None:
 | `timeout(seconds, *, fallback, exception)` | Decorator that adds a timeout to sync or async functions |
 | `TimeoutError` | Raised on timeout; has a `.seconds` attribute |
 
-
 ## Development
 
 ```bash
@@ -81,6 +79,24 @@ pip install -e .
 python -m pytest tests/ -v
 ```
 
+## Support
+
+If you find this project useful:
+
+⭐ [Star the repo](https://github.com/philiprehberger/py-func-timeout)
+
+🐛 [Report issues](https://github.com/philiprehberger/py-func-timeout/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
+
+💡 [Suggest features](https://github.com/philiprehberger/py-func-timeout/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+
+❤️ [Sponsor development](https://github.com/sponsors/philiprehberger)
+
+🌐 [All Open Source Projects](https://philiprehberger.com/open-source-packages)
+
+💻 [GitHub Profile](https://github.com/philiprehberger)
+
+🔗 [LinkedIn Profile](https://www.linkedin.com/in/philiprehberger)
+
 ## License
 
-MIT
+[MIT](LICENSE)
