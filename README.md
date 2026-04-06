@@ -4,7 +4,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/philiprehberger-func-timeout.svg)](https://pypi.org/project/philiprehberger-func-timeout/)
 [![Last updated](https://img.shields.io/github/last-commit/philiprehberger/py-func-timeout)](https://github.com/philiprehberger/py-func-timeout/commits/main)
 
-Add a timeout to any function call — sync or async.
+Add a timeout to any function call, sync or async.
 
 ## Installation
 
@@ -16,11 +16,6 @@ pip install philiprehberger-func-timeout
 
 ```python
 from philiprehberger_func_timeout import timeout
-```
-
-### Sync functions
-
-```python
 import time
 
 @timeout(2.0)
@@ -65,12 +60,26 @@ def slow() -> None:
     time.sleep(10)
 ```
 
+### Retry
+
+```python
+from philiprehberger_func_timeout import retry
+
+@retry(attempts=3, delay=1.0, backoff=2.0)
+def fetch_data(url: str) -> str:
+    return requests.get(url).text
+
+result = fetch_data("https://api.example.com/data")
+```
+
 ## API
 
 | Function / Class | Description |
 |------------------|-------------|
 | `timeout(seconds, *, fallback, exception)` | Decorator that adds a timeout to sync or async functions |
 | `TimeoutError` | Raised on timeout; has a `.seconds` attribute |
+| `timeout_context(seconds, *, fallback, exception)` | Context manager that raises on timeout |
+| `retry(attempts, delay, *, backoff, on_error)` | Decorator that retries a function on failure with optional backoff |
 
 ## Development
 
