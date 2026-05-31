@@ -60,6 +60,22 @@ def slow() -> None:
     time.sleep(10)
 ```
 
+### One-shot execution
+
+```python
+from philiprehberger_func_timeout import run_with_timeout, async_run_with_timeout
+import asyncio, time
+
+# Sync: call any function with a timeout, no decorator required
+result = run_with_timeout(time.sleep, 0.01, timeout=1)
+
+# Async: wrap any awaitable
+async def main() -> None:
+    await async_run_with_timeout(asyncio.sleep(0.01), timeout=1)
+
+asyncio.run(main())
+```
+
 ### Retry
 
 ```python
@@ -80,6 +96,8 @@ result = fetch_data("https://api.example.com/data")
 | `TimeoutError` | Raised on timeout; has a `.seconds` attribute |
 | `timeout_context(seconds, *, fallback, exception)` | Context manager that raises on timeout |
 | `retry(attempts, delay, *, backoff, on_error)` | Decorator that retries a function on failure with optional backoff |
+| `run_with_timeout(fn, *args, timeout, **kwargs)` | One-shot sync call with a timeout; forwards args/kwargs to `fn` |
+| `async_run_with_timeout(coro, timeout)` | Await an awaitable with a timeout; raises this package's `TimeoutError` |
 
 ## Development
 

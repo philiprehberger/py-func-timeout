@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0 (2026-05-30)
+
+- Add `run_with_timeout()` for one-shot synchronous calls with a timeout
+- Add `async_run_with_timeout()` async sibling that converts asyncio.TimeoutError into the package's TimeoutError
+
 ## 0.2.0 (2026-04-06)
 
 - Add `retry()` decorator with configurable attempts, delay, and exponential backoff

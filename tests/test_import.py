@@ -7,7 +7,14 @@ import time
 
 import pytest
 
-from philiprehberger_func_timeout import TimeoutError, retry, timeout, timeout_context
+from philiprehberger_func_timeout import (
+    TimeoutError,
+    async_run_with_timeout,
+    retry,
+    run_with_timeout,
+    timeout,
+    timeout_context,
+)
 
 
 # --- timeout decorator tests ---
@@ -182,3 +189,37 @@ def test_retry_invalid_attempts():
 
 def test_timeout_context_import():
     assert timeout_context is not None
+
+
+# --- run_with_timeout tests ---
+
+
+def test_run_with_timeout_returns_value():
+    assert run_with_timeout(lambda: 42, timeout=1) == 42
+
+
+def test_run_with_timeout_raises():
+    with pytest.raises(TimeoutError):
+        run_with_timeout(time.sleep, 0.5, timeout=0.05)
+
+
+def test_run_with_timeout_forwards_args_and_kwargs():
+    assert run_with_timeout(lambda x, y=2: x + y, 5, y=10, timeout=1) == 15
+
+
+# --- async_run_with_timeout tests ---
+
+
+def test_async_run_with_timeout_resolves():
+    async def runner() -> None:
+        return await async_run_with_timeout(asyncio.sleep(0.01), timeout=1)
+
+    assert asyncio.run(runner()) is None
+
+
+def test_async_run_with_timeout_raises():
+    async def runner() -> None:
+        await async_run_with_timeout(asyncio.sleep(0.5), timeout=0.05)
+
+    with pytest.raises(TimeoutError):
+        asyncio.run(runner())

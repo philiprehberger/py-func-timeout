@@ -6,9 +6,17 @@ import asyncio
 import builtins
 import functools
 import threading
+from collections.abc import Awaitable
 from typing import Any, Callable, TypeVar
 
-__all__ = ["timeout", "TimeoutError", "timeout_context", "retry"]
+__all__ = [
+    "timeout",
+    "TimeoutError",
+    "timeout_context",
+    "retry",
+    "run_with_timeout",
+    "async_run_with_timeout",
+]
 
 _MISSING: Any = object()
 _F = TypeVar("_F", bound=Callable[..., Any])
@@ -109,6 +117,71 @@ def timeout(
         return sync_wrapper  # type: ignore[return-value]
 
     return decorator
+
+
+def run_with_timeout(
+    fn: Callable[..., Any],
+    *args: Any,
+    timeout: float,
+    **kwargs: Any,
+) -> Any:
+    """Run fn(*args, **kwargs) with a timeout. Raises this package's TimeoutError on timeout.
+
+    Direct one-shot alternative to ``@timeout`` when decorating isn't convenient
+    (e.g. third-party callables or one-off invocations).
+
+    Args:
+        fn: The callable to invoke.
+        *args: Positional arguments forwarded to *fn*.
+        timeout: Maximum number of seconds the call may run.
+        **kwargs: Keyword arguments forwarded to *fn*.
+
+    Returns:
+        The return value of ``fn(*args, **kwargs)``.
+    """
+    if timeout <= 0:
+        raise ValueError("timeout must be positive")
+
+    result: Any = _MISSING
+    exc: BaseException | None = None
+
+    def target() -> None:
+        nonlocal result, exc
+        try:
+            result = fn(*args, **kwargs)
+        except BaseException as e:
+            exc = e
+
+    thread = threading.Thread(target=target, daemon=True)
+    thread.start()
+    thread.join(timeout=timeout)
+
+    if thread.is_alive():
+        raise TimeoutError(timeout)
+
+    if exc is not None:
+        raise exc
+
+    return result
+
+
+async def async_run_with_timeout(coro: Awaitable[Any], timeout: float) -> Any:
+    """Await *coro* with a timeout. Raises this package's TimeoutError on timeout.
+
+    Thin wrapper around ``asyncio.wait_for`` that converts
+    :class:`asyncio.TimeoutError` into this package's :class:`TimeoutError`.
+
+    Args:
+        coro: The awaitable to await.
+        timeout: Maximum number of seconds to wait.
+
+    Returns:
+        The value produced by awaiting *coro*.
+    """
+    try:
+        return await asyncio.wait_for(coro, timeout=timeout)
+    except asyncio.TimeoutError as e:
+        raise TimeoutError(timeout) from e
 
 
 class timeout_context:
